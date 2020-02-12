@@ -1,6 +1,4 @@
-package game.grid;
-
-import game.simplegfx.SimpleGfxGrid;
+package org.academiadecodigo.xwing.grid;
 
 public class Grid {
 

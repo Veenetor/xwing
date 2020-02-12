@@ -1,15 +1,15 @@
-package game.gameobject;
+package org.academiadecodigo.xwing.gameobject;
 
-import game.grid.Grid;
-import game.grid.GridPosition;
-import game.simplegfx.SimpleGfxGridPosition;
+import org.academiadecodigo.xwing.grid.Grid;
+import org.academiadecodigo.xwing.grid.GridPosition;
+import org.academiadecodigo.xwing.simplegfx.SimpleGfxGridPosition;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
-import org.academiadecodigo.simplegraphics.keyboard.KeyboardEventType;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
 
 public class XWing implements KeyboardHandler {
 
     private GridPosition pos;
+    private GridPosition extraPos;
     private Grid map;
 
     private SimpleGfxGridPosition gfxPos;
@@ -19,6 +19,8 @@ public class XWing implements KeyboardHandler {
     public XWing (Grid map) {
         this.map = map;
         pos = new GridPosition((map.getRows()/2), map);
+        extraPos = new GridPosition((map.getRows()/2), map);
+        extraPos.movePos(0, 1);
 
         gfxPos = new SimpleGfxGridPosition(pos.getCol(), pos.getRow());
     }
@@ -41,17 +43,23 @@ public class XWing implements KeyboardHandler {
         return pos.getRow();
     }
 
+    public int getExRow () {
+        return extraPos.getRow();
+    }
+
     public void movePlayer (int row) {
         if ((pos.getRow() + row) < 0) {
             return;
         }
 
-        if ((pos.getRow() + row) > map.getRows()-1) {
+        if ((extraPos.getRow() + row) > map.getRows()-1) {
             return;
         }
 
             pos.movePos(0, row);
+            extraPos.movePos(0, row);
             gfxPos.movePlayer(0, row);
+
         }
 
     @Override
