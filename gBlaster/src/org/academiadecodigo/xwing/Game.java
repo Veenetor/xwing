@@ -24,13 +24,13 @@ public class Game {
 
     public Game (int cols, int rows, int delay) {
         map = new Grid(cols, rows);
+        gfxMap = new SimpleGfxGrid(cols, rows);
 
         player = new XWing(map);
         handler = player;
 
         control = new Keyboard(player);
 
-        gfxMap = new SimpleGfxGrid(cols, rows);
         this.delay = delay;
 
         KeyboardEvent moveUp = new KeyboardEvent();
