@@ -1,4 +1,4 @@
-package game.grid;
+package org.academiadecodigo.xwing.grid;
 
 public class GridPosition {
 

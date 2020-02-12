@@ -1,4 +1,4 @@
-package game.simplegfx;
+package org.academiadecodigo.xwing.simplegfx;
 
 public class SimpleGfxColorMapper {
 

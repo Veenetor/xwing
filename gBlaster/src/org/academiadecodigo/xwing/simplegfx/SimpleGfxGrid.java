@@ -1,4 +1,4 @@
-package game.simplegfx;
+package org.academiadecodigo.xwing.simplegfx;
 
 import org.academiadecodigo.simplegraphics.graphics.Color;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
@@ -7,7 +7,7 @@ import org.academiadecodigo.simplegraphics.pictures.Picture;
 public class SimpleGfxGrid {
 
     public static final int PADDING = 10;
-    public static final int cellSize = 70;
+    public static final int cellSize = 40;
     private int cols;
     private int rows;
     private Rectangle canvas;

@@ -1,9 +1,8 @@
-package game;
+package org.academiadecodigo.xwing;
 
-import game.gameobject.XWing;
-import game.grid.Grid;
-import game.simplegfx.SimpleGfxGrid;
-import game.simplegfx.SimpleGfxGridPosition;
+import org.academiadecodigo.xwing.gameobject.XWing;
+import org.academiadecodigo.xwing.grid.Grid;
+import org.academiadecodigo.xwing.simplegfx.SimpleGfxGrid;
 import org.academiadecodigo.simplegraphics.keyboard.Keyboard;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEventType;
@@ -15,6 +14,7 @@ public class Game {
     private XWing player;
     private KeyboardHandler handler;
     private Keyboard control;
+    private int delay;
 
     // GFX PROPERTIES;
 
@@ -22,7 +22,7 @@ public class Game {
 
     // CONSTRUCTOR
 
-    public Game (int cols, int rows) {
+    public Game (int cols, int rows, int delay) {
         map = new Grid(cols, rows);
 
         player = new XWing(map);
@@ -31,6 +31,7 @@ public class Game {
         control = new Keyboard(player);
 
         gfxMap = new SimpleGfxGrid(cols, rows);
+        this.delay = delay;
 
         KeyboardEvent moveUp = new KeyboardEvent();
         KeyboardEvent moveDown = new KeyboardEvent();
@@ -48,8 +49,22 @@ public class Game {
     }
 
 
+    public void start() throws InterruptedException {
+
+        while (true) {
+
+            // Pause for a while
+            Thread.sleep(delay);
+
+            // game delay ();
+
+        }
+
+    }
 
 
+
+    // GET
 
     public Grid getMap () {
         return map;

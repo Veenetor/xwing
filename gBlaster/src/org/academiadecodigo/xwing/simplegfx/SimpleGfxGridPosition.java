@@ -1,12 +1,9 @@
-package game.simplegfx;
+package org.academiadecodigo.xwing.simplegfx;
 
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
-import org.academiadecodigo.simplegraphics.keyboard.Keyboard;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
-
-import java.awt.*;
 
 public class SimpleGfxGridPosition implements KeyboardHandler {
 
@@ -18,8 +15,8 @@ public class SimpleGfxGridPosition implements KeyboardHandler {
     //CONSTRUCTOR
 
     public SimpleGfxGridPosition (int col, int row) {
-        this.col = col*SimpleGfxGrid.cellSize;
-        this.row = row*SimpleGfxGrid.cellSize;
+        this.col = col*SimpleGfxGrid.cellSize+SimpleGfxGrid.PADDING;
+        this.row = row*SimpleGfxGrid.cellSize+SimpleGfxGrid.PADDING;
 
         //xWing = new Rectangle(this.col, this.row, SimpleGfxGrid.cellSize, SimpleGfxGrid.cellSize);
         //xWing.draw();
