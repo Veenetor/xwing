@@ -19,6 +19,13 @@ public class GridPosition {
 
     }
 
+    /* Asteroid constructor */
+    public GridPosition (Grid map) {
+        this.map = map;
+        col = map.getCols();
+        row = (int) Math.ceil(Math.random()*(map.getRows()-1));
+    }
+
     // METHODS
 
     public int getCol () {

@@ -4,22 +4,21 @@ import org.academiadecodigo.xwing.grid.Grid;
 import org.academiadecodigo.xwing.grid.GridColor;
 import org.academiadecodigo.xwing.grid.GridPosition;
 import org.academiadecodigo.xwing.simplegfx.SimpleGfxGrid;
+import org.academiadecodigo.xwing.simplegfx.SimpleGfxGridPosition;
 
 public abstract class GameObject {
 
 
-    private GridPosition pos;
-    private SimpleGfxGrid gfxPos;
+    protected GridPosition pos;
+    protected SimpleGfxGridPosition gfxPos;
     private int speed;
     private ObjectType type;
     private boolean destroyed;
 
     // CONSTRUCTOR
-    public GameObject (GridPosition pos, ObjectType type) {
-        this.pos = pos;
+    public GameObject (ObjectType type) {
         this.type = type;
 
-        pos.setColor(type.getColor());
 
     }
 
@@ -35,9 +34,7 @@ public abstract class GameObject {
     */
 
 
-    public void move () {
-
-    }
+    public abstract void move ();
 
 
     /*

@@ -1,5 +1,8 @@
 package org.academiadecodigo.xwing;
 
+import org.academiadecodigo.xwing.gameobject.Asteroid;
+import org.academiadecodigo.xwing.gameobject.GameObject;
+import org.academiadecodigo.xwing.gameobject.ObjectType;
 import org.academiadecodigo.xwing.gameobject.XWing;
 import org.academiadecodigo.xwing.grid.Grid;
 import org.academiadecodigo.xwing.simplegfx.SimpleGfxGrid;
@@ -15,12 +18,16 @@ public class Game {
     private KeyboardHandler handler;
     private Keyboard control;
     private int delay;
+    private Asteroid asteroid;
 
     // GFX PROPERTIES;
 
     private SimpleGfxGrid gfxMap;
 
     // CONSTRUCTOR
+
+    public Game() {
+    }
 
     public Game (int cols, int rows, int delay) {
         map = new Grid(cols, rows);
@@ -46,6 +53,7 @@ public class Game {
         control.addEventListener(moveUp);
         control.addEventListener(moveDown);
 
+        asteroid = new Asteroid(ObjectType.ASTEROID, map);
     }
 
 
@@ -56,7 +64,9 @@ public class Game {
             // Pause for a while
             Thread.sleep(delay);
 
+            moveAll();
             // game delay ();
+            colCheck();
 
         }
 
@@ -64,6 +74,17 @@ public class Game {
 
 
 
+    public void moveAll () {
+        asteroid.move();
+    }
+
+    public void colCheck () {
+        if (asteroid.getCol() == player.getCol() && asteroid.getRow() == player.getRow() || asteroid.getCol() == player.getCol() && asteroid.getRow() == player.getExRow()) {
+            player.hit();
+            asteroid.destoyed();
+        }
+
+    }
     // GET
 
     public Grid getMap () {

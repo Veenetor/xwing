@@ -14,6 +14,8 @@ public class XWing implements KeyboardHandler {
 
     private SimpleGfxGridPosition gfxPos;
 
+    private int health;
+
     //CONSTRUCTOR
 
     public XWing (Grid map) {
@@ -23,6 +25,8 @@ public class XWing implements KeyboardHandler {
         extraPos.movePos(0, 1);
 
         gfxPos = new SimpleGfxGridPosition(pos.getCol(), pos.getRow());
+
+        health = 0;
     }
 
 
@@ -39,10 +43,10 @@ public class XWing implements KeyboardHandler {
         movePlayer(1);
     }
 
+    public int getCol () {return pos.getCol();}
     public int getRow () {
         return pos.getRow();
     }
-
     public int getExRow () {
         return extraPos.getRow();
     }
@@ -61,6 +65,20 @@ public class XWing implements KeyboardHandler {
             gfxPos.movePlayer(0, row);
 
         }
+
+    public void hit () {
+        if (health > 0) {
+            health--;
+        }
+
+        else {
+            destroyed();
+        }
+    }
+
+    public void destroyed () {
+        gfxPos.destroyed();
+    }
 
     @Override
     public void keyPressed(KeyboardEvent keyboardEvent) {
