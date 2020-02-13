@@ -67,6 +67,10 @@ public class Game {
     }
 
 
+    public void reduceDelay() {
+        delay -= 50;
+    }
+
     public void start() throws InterruptedException {
 
         while (true) {
@@ -81,6 +85,8 @@ public class Game {
 
             System.out.println(score);
 
+
+            //if (score >= 200) { reduceDelay(); }
         }
 
     }
@@ -155,7 +161,7 @@ public class Game {
                     asteroidField[i].destoyed();
                 }
 
-                if (asteroidField[i].getCol() <= 0) {
+                if (asteroidField[i].getCol() < 0) {
                     asteroidField[i].destoyed();
                     asteroidField[i] = null;
 
