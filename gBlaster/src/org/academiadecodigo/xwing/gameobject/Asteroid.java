@@ -1,6 +1,7 @@
 package org.academiadecodigo.xwing.gameobject;
 
 
+import org.academiadecodigo.xwing.Game;
 import org.academiadecodigo.xwing.grid.Grid;
 import org.academiadecodigo.xwing.grid.GridPosition;
 import org.academiadecodigo.xwing.simplegfx.SimpleGfxGrid;
@@ -23,6 +24,7 @@ public class Asteroid extends GameObject {
 
     public void destoyed () {
         gfxPos.destroyed();
+        // Game.incScore(100);
     }
 
     @Override

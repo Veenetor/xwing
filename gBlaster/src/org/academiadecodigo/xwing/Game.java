@@ -22,6 +22,13 @@ public class Game {
     private Asteroid[] asteroidField;
     private int astCooldown;
 
+    // static
+
+    private static int score = 0000;
+    public static void incScore (int points) {
+        score += points;
+    }
+
     // GFX PROPERTIES;
 
     private SimpleGfxGrid gfxMap;
@@ -71,6 +78,8 @@ public class Game {
             moveAll();
             // game delay ();
             colCheck();
+
+            System.out.println(score);
 
         }
 
@@ -131,7 +140,11 @@ public class Game {
     }
 
     private void colCheck () {
+        boolean astDestroyed = false;
+
         for (int i = 0; i < asteroidField.length; i++) {
+
+
 
             if (asteroidField[i] != null) {
 
@@ -145,9 +158,17 @@ public class Game {
                 if (asteroidField[i].getCol() <= 0) {
                     asteroidField[i].destoyed();
                     asteroidField[i] = null;
+
+                    astDestroyed = true;
                 }
 
             }
+
+
+        }
+
+        if (astDestroyed) {
+            incScore(100);
         }
 
     }
