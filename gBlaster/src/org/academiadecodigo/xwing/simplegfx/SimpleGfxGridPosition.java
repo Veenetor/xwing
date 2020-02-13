@@ -21,7 +21,7 @@ public class SimpleGfxGridPosition implements KeyboardHandler {
         //xWing = new Rectangle(this.col, this.row, SimpleGfxGrid.cellSize, SimpleGfxGrid.cellSize);
         //xWing.draw();
 
-        xPic = new Picture(this.col, this.row, "xwing.png");
+        xPic = new Picture(this.col, this.row, "images/xwing.png");
         xPic.draw();
     }
 

@@ -1,11 +1,13 @@
 package org.academiadecodigo.xwing.grid;
 
+import org.academiadecodigo.xwing.gameobject.ObjectType;
+
 public class GridPosition {
 
     private Grid map;
     private int col;
     private int row;
-
+    private GridColor color;
 
     // CONSTRUCTORS
 
@@ -40,6 +42,10 @@ public class GridPosition {
       moveCol(col);
       moveRow(row);
 
+    }
+
+    public void setColor (GridColor color) {
+        this.color = color;
     }
 
     // CLASS END
