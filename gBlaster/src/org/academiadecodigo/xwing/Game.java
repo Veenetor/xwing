@@ -19,6 +19,8 @@ public class Game {
     private Keyboard control;
     private int delay;
     private Asteroid asteroid;
+    private Asteroid[] asteroidField;
+    private int astCooldown;
 
     // GFX PROPERTIES;
 
@@ -32,6 +34,7 @@ public class Game {
     public Game (int cols, int rows, int delay) {
         map = new Grid(cols, rows);
         gfxMap = new SimpleGfxGrid(cols, rows);
+        asteroidField = new Asteroid[30];
 
         player = new XWing(map);
         handler = player;
@@ -64,6 +67,7 @@ public class Game {
             // Pause for a while
             Thread.sleep(delay);
 
+            genAst();
             moveAll();
             // game delay ();
             colCheck();
@@ -73,15 +77,66 @@ public class Game {
     }
 
 
+    private void genAst () {
 
-    public void moveAll () {
-        asteroid.move();
+        if (astCooldown > 0) {
+            reduceCooldown(1);
+
+        } else {
+
+        int astRoll = (int) Math.floor(Math.random()*map.getRows());
+        int cooldown = 0;
+
+        for (int i = 0; i < asteroidField.length; i++) {
+            if (asteroidField[i] == null && astRoll > 0) {
+                int genRoll = (int) Math.ceil(Math.random() * 10);
+
+                if (genRoll > 6) {
+                    asteroidField[i] = new Asteroid(ObjectType.ASTEROID, map);
+                    cooldown++;
+                }
+                astRoll--;
+            }
+            setAstCooldown(+cooldown);
+            }
+        }
+
     }
 
-    public void colCheck () {
-        if (asteroid.getCol() == player.getCol() && asteroid.getRow() == player.getRow() || asteroid.getCol() == player.getCol() && asteroid.getRow() == player.getExRow()) {
-            player.hit();
-            asteroid.destoyed();
+    private void setAstCooldown (int number) {
+        astCooldown += number;
+    }
+
+    private void reduceCooldown (int number) {
+        astCooldown -= number;
+    }
+
+    private void moveAll () {
+        // asteroid.move();
+        moveAllAst();
+
+
+
+    }
+
+
+    public void moveAllAst () {
+        for (Asteroid ast : asteroidField) {
+            if (ast != null) {
+                ast.move();
+            }
+        }
+    }
+
+    private void colCheck () {
+        for (int i = 0; i < asteroidField.length; i++) {
+
+            if (asteroidField[i] != null) {
+                if (asteroidField[i].getCol() == player.getCol() && asteroidField[i].getRow() == player.getRow() || asteroidField[i].getCol() == player.getCol() && asteroidField[i].getRow() == player.getExRow()) {
+                    player.hit();
+                    asteroidField[i].destoyed();
+                }
+            }
         }
 
     }
