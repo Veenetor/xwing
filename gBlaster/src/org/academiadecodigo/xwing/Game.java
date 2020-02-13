@@ -85,7 +85,7 @@ public class Game {
         } else {
 
         int astRoll = (int) Math.floor(Math.random()*map.getRows());
-        int cooldown = 0;
+        int colAdd = 0;
 
         for (int i = 0; i < asteroidField.length; i++) {
             if (asteroidField[i] == null && astRoll > 0) {
@@ -93,18 +93,20 @@ public class Game {
 
                 if (genRoll > 6) {
                     asteroidField[i] = new Asteroid(ObjectType.ASTEROID, map);
-                    cooldown++;
+                    colAdd++;
                 }
                 astRoll--;
             }
-            setAstCooldown(+cooldown);
             }
+
+        incAstCooldown(colAdd);
+
         }
 
     }
 
-    private void setAstCooldown (int number) {
-        astCooldown += number;
+    private void incAstCooldown (int number) {
+        astCooldown = (int) (2 + Math.random()*number);
     }
 
     private void reduceCooldown (int number) {
@@ -132,10 +134,19 @@ public class Game {
         for (int i = 0; i < asteroidField.length; i++) {
 
             if (asteroidField[i] != null) {
-                if (asteroidField[i].getCol() == player.getCol() && asteroidField[i].getRow() == player.getRow() || asteroidField[i].getCol() == player.getCol() && asteroidField[i].getRow() == player.getExRow()) {
+
+
+
+            if (asteroidField[i].getCol() == player.getCol() && asteroidField[i].getRow() == player.getRow() || asteroidField[i].getCol() == player.getCol() && asteroidField[i].getRow() == player.getExRow()) {
                     player.hit();
                     asteroidField[i].destoyed();
                 }
+
+                if (asteroidField[i].getCol() <= 0) {
+                    asteroidField[i].destoyed();
+                    asteroidField[i] = null;
+                }
+
             }
         }
 
