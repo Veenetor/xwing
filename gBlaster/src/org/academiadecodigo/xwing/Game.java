@@ -18,7 +18,6 @@ public class Game {
     private KeyboardHandler handler;
     private Keyboard control;
     private int delay;
-    private Asteroid asteroid;
     private Asteroid[] asteroidField;
     private int astCooldown;
 
@@ -52,18 +51,24 @@ public class Game {
 
         KeyboardEvent moveUp = new KeyboardEvent();
         KeyboardEvent moveDown = new KeyboardEvent();
-
+        KeyboardEvent moveBack = new KeyboardEvent();
+        KeyboardEvent moveFor = new KeyboardEvent();
 
         moveUp.setKey(KeyboardEvent.KEY_UP);
         moveDown.setKey(KeyboardEvent.KEY_DOWN);
+        moveBack.setKey(KeyboardEvent.KEY_LEFT);
+        moveFor.setKey(KeyboardEvent.KEY_RIGHT);
 
         moveUp.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
         moveDown.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        moveBack.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        moveFor.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
 
         control.addEventListener(moveUp);
         control.addEventListener(moveDown);
+        control.addEventListener(moveBack);
+        control.addEventListener(moveFor);
 
-        asteroid = new Asteroid(ObjectType.ASTEROID, map);
     }
 
 

@@ -50,10 +50,10 @@ public class XWing implements KeyboardHandler {
     }
 
     public void moveUp () {
-        movePlayer(-1);
+        movePlayer(0, -1);
     }
     public void moveDown () {
-        movePlayer(1);
+        movePlayer(0, 1);
     }
 
     public int getCol () {return pos.getCol();}
@@ -64,7 +64,7 @@ public class XWing implements KeyboardHandler {
         return extraPos.getRow();
     }
 
-    public void movePlayer (int row) {
+    public void movePlayer (int col, int row) {
         if ((pos.getRow() + row) < 0) {
             return;
         }
@@ -73,9 +73,17 @@ public class XWing implements KeyboardHandler {
             return;
         }
 
-            pos.movePos(0, row);
-            extraPos.movePos(0, row);
-            gfxPos.movePlayer(0, row);
+        if ((pos.getCol() + col) < 0) {
+            return;
+        }
+
+        if ((pos.getCol() + col) > map.getCols()-1) {
+            return;
+        }
+
+            pos.movePos(col, row);
+            extraPos.movePos(col, row);
+            gfxPos.movePlayer(col, row);
 
         }
 
@@ -115,11 +123,19 @@ public class XWing implements KeyboardHandler {
     public void keyPressed(KeyboardEvent keyboardEvent) {
 
         if (KeyboardEvent.KEY_DOWN == keyboardEvent.getKey()) {
-                movePlayer(1);
+                movePlayer(0, 1);
         }
 
         if (KeyboardEvent.KEY_UP == keyboardEvent.getKey()) {
-            movePlayer(-1);
+            movePlayer(0, -1);
+        }
+
+        if (KeyboardEvent.KEY_LEFT == keyboardEvent.getKey()) {
+            movePlayer(-1, 0);
+        }
+
+        if (KeyboardEvent.KEY_RIGHT == keyboardEvent.getKey()) {
+            movePlayer(1, 0);
         }
     }
 
