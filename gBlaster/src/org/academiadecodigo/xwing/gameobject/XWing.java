@@ -1,10 +1,14 @@
 package org.academiadecodigo.xwing.gameobject;
 
+import org.academiadecodigo.simplegraphics.pictures.Picture;
 import org.academiadecodigo.xwing.grid.Grid;
 import org.academiadecodigo.xwing.grid.GridPosition;
+import org.academiadecodigo.xwing.simplegfx.SimpleGfxGrid;
 import org.academiadecodigo.xwing.simplegfx.SimpleGfxGridPosition;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
+
+import java.awt.*;
 
 public class XWing implements KeyboardHandler {
 
@@ -14,7 +18,10 @@ public class XWing implements KeyboardHandler {
 
     private SimpleGfxGridPosition gfxPos;
 
-    private int health;
+    private Picture[] health;
+    // private int health2;
+
+    private boolean isDestroyed;
 
     //CONSTRUCTOR
 
@@ -26,7 +33,13 @@ public class XWing implements KeyboardHandler {
 
         gfxPos = new SimpleGfxGridPosition(pos.getCol(), pos.getRow());
 
-        health = 0;
+        health = new Picture[5];
+
+        for (int h = 0; h < 3; h++ ) {
+            health[h] = new Picture((( h+SimpleGfxGrid.PADDING) * SimpleGfxGrid.cellSize), SimpleGfxGrid.PADDING+20, "images/explosion.png");
+            health[h].draw();
+        }
+
     }
 
 
@@ -67,13 +80,31 @@ public class XWing implements KeyboardHandler {
         }
 
     public void hit () {
-        if (health > 0) {
-            health--;
+
+        if (health[1] == null) {
+            health[0].delete();
+            health[0] = null;
+            isDestroyed = true;
+        } else {
+
+            for (int h = health.length - 1; h > 0; h--) {
+
+                if (health[h] != null) {
+                    health[h].delete();
+                    health[h] = null;
+                    return;
+                }
+            }
         }
 
-        else {
+        if (isDestroyed) {
             destroyed();
         }
+
+    }
+
+    public boolean isDestroyed () {
+        return isDestroyed;
     }
 
     public void destroyed () {

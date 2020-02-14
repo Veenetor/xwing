@@ -82,11 +82,14 @@ public class Game {
             moveAll();
             // game delay ();
             colCheck();
+            expManager();
+            astScore();
+
 
             System.out.println(score);
 
 
-            //if (score >= 200) { reduceDelay(); }
+            // if (score >= 200) { reduceDelay(); }
         }
 
     }
@@ -145,39 +148,68 @@ public class Game {
         }
     }
 
-    private void colCheck () {
+
+    private void expManager () {
+
+        for (int i = 0; i < asteroidField.length; i++) {
+
+            if (asteroidField[i] != null) {
+
+                if (asteroidField[i].isExploded()) {
+                    if (asteroidField[i].getLag() > 0) {
+                        asteroidField[i].remLag();
+                    } else {
+                        asteroidField[i].destoyed();
+                        asteroidField[i] = null;
+                    }
+                }
+            }
+        }
+    }
+
+
+    private void astScore () {
+
         boolean astDestroyed = false;
 
         for (int i = 0; i < asteroidField.length; i++) {
 
-
-
             if (asteroidField[i] != null) {
 
 
-
-            if (asteroidField[i].getCol() == player.getCol() && asteroidField[i].getRow() == player.getRow() || asteroidField[i].getCol() == player.getCol() && asteroidField[i].getRow() == player.getExRow()) {
-                    player.hit();
-                    asteroidField[i].destoyed();
-                }
-
-                if (asteroidField[i].getCol() < 0) {
-                    asteroidField[i].destoyed();
+                if (asteroidField[i].getCol() < 0 && !asteroidField[i].isExploded()) {
+                    asteroidField[i].remove();
                     asteroidField[i] = null;
-
                     astDestroyed = true;
                 }
 
             }
-
-
         }
 
-        if (astDestroyed) {
+        if (astDestroyed && !player.isDestroyed()) {
             incScore(100);
         }
 
     }
+
+    private void colCheck () {
+
+        if (!player.isDestroyed()) {
+
+            for (int i = 0; i < asteroidField.length; i++) {
+
+                if (asteroidField[i] != null) {
+
+                    if (asteroidField[i].getCol() == player.getCol() && asteroidField[i].getRow() == player.getRow() || asteroidField[i].getCol() == player.getCol() && asteroidField[i].getRow() == player.getExRow()) {
+                        player.hit();
+                        asteroidField[i].explode();
+                    }
+                }
+            }
+        }
+    }
+
+
     // GET
 
     public Grid getMap () {
