@@ -1,6 +1,7 @@
 package org.academiadecodigo.xwing.grid;
 
 import org.academiadecodigo.xwing.gameobject.ObjectType;
+import org.academiadecodigo.xwing.simplegfx.SimpleGfxGrid;
 
 public class GridPosition {
 
@@ -19,11 +20,48 @@ public class GridPosition {
 
     }
 
-    /* Asteroid constructor */
-    public GridPosition (Grid map) {
+    public GridPosition (int col, int row, Grid map) {
+        // to be used for extPos!!
         this.map = map;
-        col = map.getCols();
-        row = (int) Math.ceil(Math.random()*(map.getRows()-1));
+        this.col = col;
+        this.row = row;
+    }
+
+    /* Asteroid constructor */
+    public GridPosition (ObjectType type, Grid map) {
+        this.map = map;
+
+        if (type == ObjectType.ASTEROID) {
+            col = map.getCols();
+            row = (int) Math.ceil(Math.random() * (map.getRows() - 1));
+        }
+
+        if (type == ObjectType.TIE) {
+            col = map.getCols() - 2;
+
+            int roll = (int) Math.ceil(Math.random() * 6);
+
+            if (roll > 3) {
+                row = map.getRows() - 2;
+            } else {
+                row = 0;
+            }
+        }
+    }
+
+
+    public GridPosition (ObjectType type, Grid map, int col) {
+        if (type == ObjectType.TIE) {
+            this.col = map.getCols() - (2 + (col*2));
+
+            int roll = (int) Math.ceil(Math.random() * 6);
+
+            if (roll > 3) {
+                row = map.getRows() - 2;
+            } else {
+                row = 0;
+            }
+        }
     }
 
     // METHODS

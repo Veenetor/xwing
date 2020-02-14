@@ -18,11 +18,9 @@ public class Asteroid extends GameObject {
     public Asteroid(ObjectType type, Grid map) {
         super(type);
 
-
-        pos = new GridPosition(map);
+        pos = new GridPosition(type, map);
         gfxPos = new SimpleGfxGridPosition(pos.getCol(), pos.getRow(), type);
         hasExploded = false;
-
 
     }
 

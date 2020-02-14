@@ -1,9 +1,6 @@
 package org.academiadecodigo.xwing;
 
-import org.academiadecodigo.xwing.gameobject.Asteroid;
-import org.academiadecodigo.xwing.gameobject.GameObject;
-import org.academiadecodigo.xwing.gameobject.ObjectType;
-import org.academiadecodigo.xwing.gameobject.XWing;
+import org.academiadecodigo.xwing.gameobject.*;
 import org.academiadecodigo.xwing.grid.Grid;
 import org.academiadecodigo.xwing.simplegfx.SimpleGfxGrid;
 import org.academiadecodigo.simplegraphics.keyboard.Keyboard;
@@ -20,6 +17,7 @@ public class Game {
     private int delay;
     private Asteroid[] asteroidField;
     private int astCooldown;
+    private TieFighter[] tieFleet;
 
     // static
 
@@ -41,6 +39,7 @@ public class Game {
         map = new Grid(cols, rows);
         gfxMap = new SimpleGfxGrid(cols, rows);
         asteroidField = new Asteroid[30];
+        tieFleet = new TieFighter[3];
 
         player = new XWing(map);
         handler = player;
@@ -84,6 +83,7 @@ public class Game {
             Thread.sleep(delay);
 
             genAst();
+            genTie();
             moveAll();
             // game delay ();
             colCheck();
@@ -128,6 +128,22 @@ public class Game {
 
     }
 
+    private void genTie () {
+
+        int tieRoll = (int) Math.floor(Math.random()*6);
+
+        if (tieRoll > 1) {
+            for (int t = 0; t < tieFleet.length; t++) {
+
+                if (tieFleet[t] == null) {
+                    tieFleet[t] = new TieFighter(ObjectType.TIE, map, t);
+                    return;
+                }
+
+            }
+        }
+    }
+
     private void incAstCooldown (int number) {
         astCooldown = (int) (2 + Math.random()*number);
     }
@@ -139,16 +155,23 @@ public class Game {
     private void moveAll () {
         // asteroid.move();
         moveAllAst();
-
-
+        moveAllTie();
 
     }
 
 
-    public void moveAllAst () {
+    private void moveAllAst () {
         for (Asteroid ast : asteroidField) {
             if (ast != null) {
                 ast.move();
+            }
+        }
+    }
+
+    private void moveAllTie () {
+        for (TieFighter tie : tieFleet) {
+            if (tie != null) {
+                tie.move();
             }
         }
     }

@@ -37,7 +37,7 @@ public class XWing implements KeyboardHandler {
         health = new Picture[5];
 
         for (int h = 0; h < 3; h++ ) {
-            health[h] = new Picture((( h+SimpleGfxGrid.PADDING) * SimpleGfxGrid.cellSize), SimpleGfxGrid.PADDING+20, "images/explosion.png");
+            health[h] = new Picture((h * SimpleGfxGrid.cellSize)+20, SimpleGfxGrid.PADDING+10, "images/r2d2-health.png");
             health[h].draw();
         }
 

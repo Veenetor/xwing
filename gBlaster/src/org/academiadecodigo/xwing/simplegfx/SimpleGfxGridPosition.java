@@ -39,6 +39,17 @@ public class SimpleGfxGridPosition implements KeyboardHandler {
             picture.draw();
         }
 
+            // TIE FIGHTER CONSTRUCTOR
+
+        if (type == ObjectType.TIE ) {
+
+            this.col = col*SimpleGfxGrid.cellSize+SimpleGfxGrid.PADDING;
+            this.row = row*SimpleGfxGrid.cellSize+SimpleGfxGrid.PADDING;
+
+            picture = new Picture(this.col, this.row, "images/tieF.png");
+            picture.draw();
+        }
+
     }
 
 
