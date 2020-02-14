@@ -1,6 +1,7 @@
 package org.academiadecodigo.xwing.gameobject;
 
 import org.academiadecodigo.simplegraphics.pictures.Picture;
+import org.academiadecodigo.xwing.Game;
 import org.academiadecodigo.xwing.grid.Grid;
 import org.academiadecodigo.xwing.grid.GridPosition;
 import org.academiadecodigo.xwing.simplegfx.SimpleGfxGrid;
@@ -91,7 +92,6 @@ public class XWing implements KeyboardHandler {
 
         if (health[1] == null) {
             health[0].delete();
-            health[0] = null;
             isDestroyed = true;
         } else {
 
@@ -124,18 +124,22 @@ public class XWing implements KeyboardHandler {
 
         if (KeyboardEvent.KEY_DOWN == keyboardEvent.getKey()) {
                 movePlayer(0, 1);
+                return;
         }
 
         if (KeyboardEvent.KEY_UP == keyboardEvent.getKey()) {
             movePlayer(0, -1);
+            return;
         }
 
         if (KeyboardEvent.KEY_LEFT == keyboardEvent.getKey()) {
             movePlayer(-1, 0);
+            return;
         }
 
         if (KeyboardEvent.KEY_RIGHT == keyboardEvent.getKey()) {
             movePlayer(1, 0);
+            return;
         }
     }
 
