@@ -1,5 +1,7 @@
 package org.academiadecodigo.xwing;
 
+import org.academiadecodigo.simplegraphics.graphics.Text;
+import org.academiadecodigo.simplegraphics.pictures.Picture;
 import org.academiadecodigo.xwing.gameobject.*;
 import org.academiadecodigo.xwing.grid.Grid;
 import org.academiadecodigo.xwing.simplegfx.SimpleGfxGrid;
@@ -8,7 +10,8 @@ import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEventType;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
 
-public class Game {
+
+public class Game  implements KeyboardHandler {
 
     private Grid map;
     private XWing player;
@@ -32,9 +35,6 @@ public class Game {
 
     // CONSTRUCTOR
 
-    public Game() {
-    }
-
     public Game (int cols, int rows, int delay) {
         map = new Grid(cols, rows);
         gfxMap = new SimpleGfxGrid(cols, rows);
@@ -48,31 +48,91 @@ public class Game {
 
         this.delay = delay;
 
+
+        // MOVEMENT
         KeyboardEvent moveUp = new KeyboardEvent();
         KeyboardEvent moveDown = new KeyboardEvent();
         KeyboardEvent moveBack = new KeyboardEvent();
         KeyboardEvent moveFor = new KeyboardEvent();
+        KeyboardEvent startGame = new KeyboardEvent();
 
         moveUp.setKey(KeyboardEvent.KEY_UP);
         moveDown.setKey(KeyboardEvent.KEY_DOWN);
         moveBack.setKey(KeyboardEvent.KEY_LEFT);
         moveFor.setKey(KeyboardEvent.KEY_RIGHT);
+        startGame.setKey(KeyboardEvent.KEY_SPACE);
 
         moveUp.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
         moveDown.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
         moveBack.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
         moveFor.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        startGame.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        startGame.setKeyboardEventType(KeyboardEventType.KEY_RELEASED);
 
         control.addEventListener(moveUp);
         control.addEventListener(moveDown);
         control.addEventListener(moveBack);
         control.addEventListener(moveFor);
+        control.addEventListener(startGame);
 
+        // SHOOT CONTROLS
+
+        KeyboardEvent fireX = new KeyboardEvent();
+
+        fireX.setKey(KeyboardEvent.KEY_F);
+
+        fireX.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+
+        // addEventListener();
+
+        LoadGame loadGame = new LoadGame(); // instancia Game loader
+        //loadGame.loadGame();
+
+
+        //  PRINT SCORE BASIS!!!!
+
+/*        Text text = new Text(map.getCols()-10) * SimpleGfxGrid.cellSize, (map.getRows()*SimpleGfxGrid.cellSize)+50, "%05d"+score);
+        text.grow();
+        text.setText("%05d"+score);*/
     }
+
 
 
     public void reduceDelay() {
         delay -= 50;
+    }
+
+    @Override
+    public void keyPressed(KeyboardEvent keyboardEvent) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyboardEvent keyboardEvent) {
+
+    }
+
+    private class LoadGame implements KeyboardHandler{
+        private Picture picture = new Picture(10, 10, "images/background.jpg");
+        public void loadGame() {
+            picture.draw();
+        }
+        @Override
+        public void keyPressed(KeyboardEvent keyboardEvent) {
+            if(KeyboardEvent.KEY_SPACE == keyboardEvent.getKey()){
+                try {
+                    start();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        @Override
+        public void keyReleased(KeyboardEvent keyboardEvent) {
+            if(KeyboardEvent.KEY_SPACE == keyboardEvent.getKey()){
+                picture.delete();
+            }
+        }
     }
 
     public void start() throws InterruptedException {
@@ -83,7 +143,9 @@ public class Game {
             Thread.sleep(delay);
 
             genAst();
-            genTie();
+            if (score > 1500) {
+                genTie();
+            }
             moveAll();
             // game delay ();
             colCheck();

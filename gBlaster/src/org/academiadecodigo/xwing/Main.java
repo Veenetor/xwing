@@ -10,7 +10,7 @@ public class Main {
 
 
 
-      //  game.start();
+        game.start();
 
 
 
