@@ -2,8 +2,8 @@ package org.academiadecodigo.xwing.grid;
 
 public class Grid {
 
-    private int cols;
-    private int rows;
+    public static int cols;
+    public static int rows;
 
 
 
