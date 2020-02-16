@@ -35,19 +35,29 @@ public class Asteroid extends GameObject {
         return hasExploded;
     }
 
-    public void explode () {
+    public void explode () throws InterruptedException {
         gfxPos.destroyed();
-        this.explosion = new Picture(this.getCol()*SimpleGfxGrid.cellSize, this.getRow()*SimpleGfxGrid.cellSize, "images/explosion.png");
-        explosion.draw();
         hasExploded = true;
         explosionLag = 2;
+
+        explosion();
+    }
+
+    public void explosion() throws InterruptedException {
+        for (int i = 10; i < 17 ; i++) {
+            this.explosion = new Picture(this.getCol()*SimpleGfxGrid.cellSize, this.getRow()*SimpleGfxGrid.cellSize, "images/explosion/"+i+".png");
+            explosion.draw();
+            Thread.sleep(15);
+            explosion.delete();
+
+        }
     }
 
     public void destoyed () {
             explosion.delete();
 
          // gfxPos.destroyed();
-        // Game.incScore(100);
+         // Game.incScore(100);
     }
 
     public void remove () {
@@ -58,7 +68,6 @@ public class Asteroid extends GameObject {
     public void move () {
         pos.movePos(-1, 0);
         gfxPos.moveAst();
-
     }
 
     public int getRow () {

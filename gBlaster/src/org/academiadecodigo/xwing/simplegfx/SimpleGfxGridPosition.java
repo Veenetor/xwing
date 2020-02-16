@@ -25,6 +25,8 @@ public class SimpleGfxGridPosition implements KeyboardHandler {
 
         picture = new Picture(this.col, this.row, "images/xwing.png");
         picture.draw();
+
+
     }
 
     /* obstacle constructor */

@@ -9,6 +9,13 @@ import org.academiadecodigo.simplegraphics.keyboard.Keyboard;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEventType;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
+import org.academiadecodigo.simplegraphics.graphics.Color;
+
+
+import javax.sound.sampled.*;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.InputStream;
 
 
 public class Game  implements KeyboardHandler {
@@ -17,16 +24,30 @@ public class Game  implements KeyboardHandler {
     private XWing player;
     private KeyboardHandler handler;
     private Keyboard control;
+    private Keyboard endControl;
+    KeyboardHandler endHandler;
     private int delay;
     private Asteroid[] asteroidField;
     private int astCooldown;
     private TieFighter[] tieFleet;
+    private Text text;
+    private Text endScore;
+    private Text bestScore;
+    private int level;
+    private File audioGameOver;
+    private boolean gameOverB;
 
     // static
 
-    private static int score = 0000;
-    public static void incScore (int points) {
+    private int score = 00000;
+    private int updatedScore;
+    public int incScore (int points) {
         score += points;
+        return updatedScore = score;
+    }
+
+    public int getScore(){
+        return score;
     }
 
     // GFX PROPERTIES;
@@ -48,19 +69,21 @@ public class Game  implements KeyboardHandler {
 
         this.delay = delay;
 
-
         // MOVEMENT
         KeyboardEvent moveUp = new KeyboardEvent();
         KeyboardEvent moveDown = new KeyboardEvent();
         KeyboardEvent moveBack = new KeyboardEvent();
         KeyboardEvent moveFor = new KeyboardEvent();
         KeyboardEvent startGame = new KeyboardEvent();
+        KeyboardEvent endGame = new KeyboardEvent();
 
         moveUp.setKey(KeyboardEvent.KEY_UP);
         moveDown.setKey(KeyboardEvent.KEY_DOWN);
         moveBack.setKey(KeyboardEvent.KEY_LEFT);
         moveFor.setKey(KeyboardEvent.KEY_RIGHT);
         startGame.setKey(KeyboardEvent.KEY_SPACE);
+        endGame.setKey(KeyboardEvent.KEY_Q);
+        endGame.setKey(KeyboardEvent.KEY_R);
 
         moveUp.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
         moveDown.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
@@ -68,12 +91,14 @@ public class Game  implements KeyboardHandler {
         moveFor.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
         startGame.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
         startGame.setKeyboardEventType(KeyboardEventType.KEY_RELEASED);
+        endGame.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
 
         control.addEventListener(moveUp);
         control.addEventListener(moveDown);
         control.addEventListener(moveBack);
         control.addEventListener(moveFor);
         control.addEventListener(startGame);
+        control.addEventListener(endGame);
 
         // SHOOT CONTROLS
 
@@ -91,12 +116,17 @@ public class Game  implements KeyboardHandler {
 
         //  PRINT SCORE BASIS!!!!
 
-/*        Text text = new Text(map.getCols()-10) * SimpleGfxGrid.cellSize, (map.getRows()*SimpleGfxGrid.cellSize)+50, "%05d"+score);
-        text.grow();
-        text.setText("%05d"+score);*/
+        text = new Text(1170, 730, "%05d" + "Score");
+        text.grow(13,13);
+        text.setColor(Color.WHITE);
+        text.draw();
+        //text.setText(String.format("Score: "+updatedScore));
+
+        // Audio Resources
+
+        audioGameOver = new File("/Users/codecadet/Documents/AndreGoncalves/dev/game-blasters/xwing/gBlaster/src/resources/audio/space-invaders.wav");
+
     }
-
-
 
     public void reduceDelay() {
         delay -= 50;
@@ -105,6 +135,19 @@ public class Game  implements KeyboardHandler {
     @Override
     public void keyPressed(KeyboardEvent keyboardEvent) {
 
+        if (KeyboardEvent.KEY_R == keyboardEvent.getKey()) {
+            try {
+                start();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+
+        if (KeyboardEvent.KEY_Q == keyboardEvent.getKey()) {
+            System.exit(0);
+            return;
+        }
     }
 
     @Override
@@ -139,10 +182,17 @@ public class Game  implements KeyboardHandler {
 
         while (true) {
 
+            System.out.println(score);
+
             // Pause for a while
             Thread.sleep(delay);
 
             genAst();
+            //audioDuringGame;
+            if (player.isDestroyed() == true){
+                gameOver();
+            }
+
             if (score > 1500) {
                 genTie();
             }
@@ -152,14 +202,35 @@ public class Game  implements KeyboardHandler {
             expManager();
             astScore();
 
-
-            System.out.println(score);
-
+            text.setText(String.format("Score: "+updatedScore));
 
             // if (score >= 200) { reduceDelay(); }
         }
 
     }
+
+
+    public void gameOver() throws InterruptedException {
+                Thread.sleep(500);
+                Picture gameOver = new Picture(10, 10, "images/gameover.png");
+                gameOver.draw();
+                audio(audioGameOver);
+
+                endScore = new Text(1000, 700, "%05d" + "Score");
+                endScore.grow(15,15);
+                endScore.setColor(Color.WHITE);
+                endScore.setText(String.format("Your final Score was: " + updatedScore));
+                endScore.draw();
+
+                endScore = new Text(1000, 730, "%05d" + "Score");
+                endScore.grow(15,15);
+                endScore.setColor(Color.WHITE);
+                endScore.setText(String.format("Your best score is: " + bestScore));
+                endScore.draw();
+
+                //Thread.sleep(2000); // System.exit()
+    }
+
 
 
     private void genAst () {
@@ -282,7 +353,7 @@ public class Game  implements KeyboardHandler {
 
     }
 
-    private void colCheck () {
+    private void colCheck () throws InterruptedException {
 
         if (!player.isDestroyed()) {
 
@@ -310,6 +381,47 @@ public class Game  implements KeyboardHandler {
         return player;
     }
 
+        public int mvUP = 0, mvDown = 0, mVleft = 0, mVright = 0;
+        Clip audioClipIntro;
+        Clip audioClipEndGame;
+        Clip audioClipGameOver;
+
+        public void audio(File audioFile){
+
+            try{
+                AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+
+                AudioFormat format = audioStream.getFormat();
+                DataLine.Info info = new DataLine.Info(Clip.class, format);
+                audioClipGameOver.open(audioStream);
+                audioClipGameOver.start();
+
+            }catch(Exception e){
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+
+
+    /*
+    Implementar
+
+    public difIncrease(){
+
+
+    if (score % X == x a nossa escolha, entao level++)
+
+    public extraMove()
+
+    for (int i =0; i< level; i++){
+    moveAllAst
+    colCheck
+    verificar genAst
+    }
+
+
+     */
+
 
     // CLASS END
-}
