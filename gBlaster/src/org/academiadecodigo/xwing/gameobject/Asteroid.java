@@ -14,6 +14,7 @@ public class Asteroid extends GameObject {
     private boolean hasExploded;
     private int explosionLag;
     private Picture explosion;
+    private int obstacleHealth = 100;
 
     public Asteroid(ObjectType type, Grid map) {
         super(type);
@@ -21,7 +22,6 @@ public class Asteroid extends GameObject {
         pos = new GridPosition(type, map);
         gfxPos = new SimpleGfxGridPosition(pos.getCol(), pos.getRow(), type);
         hasExploded = false;
-
     }
 
     public int getLag () {

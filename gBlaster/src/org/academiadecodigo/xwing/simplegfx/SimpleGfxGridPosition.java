@@ -13,6 +13,9 @@ public class SimpleGfxGridPosition implements KeyboardHandler {
     private Rectangle xWing;
     private Picture picture;
 
+    private Picture shootUp;
+    private Picture shootDown;
+
     //CONSTRUCTOR
 
     /* player constructor */
@@ -25,6 +28,9 @@ public class SimpleGfxGridPosition implements KeyboardHandler {
 
         picture = new Picture(this.col, this.row, "images/xwing.png");
         picture.draw();
+
+        shootUp = new Picture(this.col, this.row, "images/laserUp.png");
+        shootDown = new Picture(this.col , this.row+1, "images/laserDown.png");
 
 
     }
@@ -65,6 +71,15 @@ public class SimpleGfxGridPosition implements KeyboardHandler {
 
     public void movePlayer (int col, int row) {
         picture.translate(col*SimpleGfxGrid.cellSize, row*SimpleGfxGrid.cellSize);
+    }
+
+    public void moveBulletUp () {
+        shootUp.translate(-1*SimpleGfxGrid.cellSize, 0);
+    }
+
+    public void moveBulletDown(){
+        shootDown.translate(1*SimpleGfxGrid.cellSize, 0);
+
     }
 
     @Override

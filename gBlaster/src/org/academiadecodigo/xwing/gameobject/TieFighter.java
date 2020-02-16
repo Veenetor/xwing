@@ -14,6 +14,7 @@ public class TieFighter extends GameObject {
     private Picture explosion;
     private GridPosition extPos;
     private Grid map;
+    private int tieHealth = 200;
 
     private int direction;  // 1. down, 2. up, 3. left, 4. right
 
