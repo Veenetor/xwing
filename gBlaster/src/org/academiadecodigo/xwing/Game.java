@@ -15,12 +15,15 @@ public class Game  implements KeyboardHandler {
 
     private Grid map;
     private XWing player;
+
     private KeyboardHandler handler;
-    private Keyboard control;
+    private Keyboard keyboard;
     private int delay;
     private Asteroid[] asteroidField;
     private int astCooldown;
     private TieFighter[] tieFleet;
+    private Picture picture;
+    private boolean gameStarted = false;
 
     // static
 
@@ -35,65 +38,21 @@ public class Game  implements KeyboardHandler {
 
     // CONSTRUCTOR
 
-    public Game (int cols, int rows, int delay) {
+    public Game (int cols, int rows, int delay) throws InterruptedException {
         map = new Grid(cols, rows);
         gfxMap = new SimpleGfxGrid(cols, rows);
         asteroidField = new Asteroid[30];
         tieFleet = new TieFighter[3];
 
-        player = new XWing(map);
-        handler = player;
-
-        control = new Keyboard(player);
-
         this.delay = delay;
 
-
-        // MOVEMENT
-        KeyboardEvent moveUp = new KeyboardEvent();
-        KeyboardEvent moveDown = new KeyboardEvent();
-        KeyboardEvent moveBack = new KeyboardEvent();
-        KeyboardEvent moveFor = new KeyboardEvent();
-        KeyboardEvent startGame = new KeyboardEvent();
-
-        moveUp.setKey(KeyboardEvent.KEY_UP);
-        moveDown.setKey(KeyboardEvent.KEY_DOWN);
-        moveBack.setKey(KeyboardEvent.KEY_LEFT);
-        moveFor.setKey(KeyboardEvent.KEY_RIGHT);
-        startGame.setKey(KeyboardEvent.KEY_SPACE);
-
-        moveUp.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        moveDown.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        moveBack.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        moveFor.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        startGame.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        startGame.setKeyboardEventType(KeyboardEventType.KEY_RELEASED);
-
-        control.addEventListener(moveUp);
-        control.addEventListener(moveDown);
-        control.addEventListener(moveBack);
-        control.addEventListener(moveFor);
-        control.addEventListener(startGame);
-
-        // SHOOT CONTROLS
-
-        KeyboardEvent fireX = new KeyboardEvent();
-
-        fireX.setKey(KeyboardEvent.KEY_F);
-
-        fireX.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-
-        // addEventListener();
-
-        LoadGame loadGame = new LoadGame(); // instancia Game loader
-        //loadGame.loadGame();
+        player = new XWing(map);
+        handler = new KeyBoardHandling(this);
+        keyboard = new Keyboard(handler);
+        System.out.println("cenas e situaçoes do caralho");
+        initListner();
 
 
-        //  PRINT SCORE BASIS!!!!
-
-/*        Text text = new Text(map.getCols()-10) * SimpleGfxGrid.cellSize, (map.getRows()*SimpleGfxGrid.cellSize)+50, "%05d"+score);
-        text.grow();
-        text.setText("%05d"+score);*/
     }
 
 
@@ -102,42 +61,64 @@ public class Game  implements KeyboardHandler {
         delay -= 50;
     }
 
-    @Override
-    public void keyPressed(KeyboardEvent keyboardEvent) {
 
-    }
-
-    @Override
-    public void keyReleased(KeyboardEvent keyboardEvent) {
-
-    }
-
-    private class LoadGame implements KeyboardHandler{
-        private Picture picture = new Picture(10, 10, "images/background.jpg");
-        public void loadGame() {
-            picture.draw();
+        public void initListner(){
+            KeyboardEvent startGame = new KeyboardEvent();
+            startGame.setKey(KeyboardEvent.KEY_SPACE);
+            startGame.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+            keyboard.addEventListener(startGame);
         }
+
+        public void startListner(){
+        // moveUp
+            KeyboardEvent moveUp = new KeyboardEvent();
+            moveUp.setKey(KeyboardEvent.KEY_UP);
+            moveUp.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+            keyboard.addEventListener(moveUp);
+
+        // moveDown
+        KeyboardEvent moveDown = new KeyboardEvent();
+        moveDown.setKey(KeyboardEvent.KEY_DOWN);
+        moveDown.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        keyboard.addEventListener(moveDown);
+
+        // moveBack
+        KeyboardEvent moveBack = new KeyboardEvent();
+        moveBack.setKey(KeyboardEvent.KEY_LEFT);
+        moveBack.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        keyboard.addEventListener(moveBack);
+
+        // moveFor
+        KeyboardEvent moveFor = new KeyboardEvent();
+        moveFor.setKey(KeyboardEvent.KEY_RIGHT);
+        moveFor.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        keyboard.addEventListener(moveFor);
+
+        // fireX
+            KeyboardEvent fireX = new KeyboardEvent();
+            fireX.setKey(KeyboardEvent.KEY_F);
+            fireX.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+            keyboard.addEventListener(fireX);
+
+        }
+
+
+
         @Override
         public void keyPressed(KeyboardEvent keyboardEvent) {
-            if(KeyboardEvent.KEY_SPACE == keyboardEvent.getKey()){
-                try {
-                    start();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+
         }
+
         @Override
         public void keyReleased(KeyboardEvent keyboardEvent) {
-            if(KeyboardEvent.KEY_SPACE == keyboardEvent.getKey()){
-                picture.delete();
-            }
+
         }
-    }
+
 
     public void start() throws InterruptedException {
+        System.out.println("Game started");
 
-        while (true) {
+        //while (gameStarted){
 
             // Pause for a while
             Thread.sleep(delay);
@@ -147,19 +128,18 @@ public class Game  implements KeyboardHandler {
                 genTie();
             }
             moveAll();
-            // game delay ();
+
             colCheck();
             expManager();
             astScore();
 
+            //System.out.println(score);
+            //System.out.println("Game started");
 
-            System.out.println(score);
-
-
-            // if (score >= 200) { reduceDelay(); }
-        }
+       // }
 
     }
+
 
 
     private void genAst () {
@@ -308,6 +288,18 @@ public class Game  implements KeyboardHandler {
 
     public XWing getPlayer () {
         return player;
+    }
+
+    public Picture getPicture(){
+        return picture;
+    }
+
+    public boolean getGameStarted(){
+        return gameStarted;
+    }
+
+    public void setGameStarted (){
+        gameStarted = true;
     }
 
 

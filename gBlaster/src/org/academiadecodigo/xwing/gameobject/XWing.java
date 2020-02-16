@@ -11,7 +11,7 @@ import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
 
 import java.awt.*;
 
-public class XWing implements KeyboardHandler {
+public class XWing {
 
     private GridPosition pos;
     private GridPosition extraPos;
@@ -119,34 +119,7 @@ public class XWing implements KeyboardHandler {
         gfxPos.destroyed();
     }
 
-    @Override
-    public void keyPressed(KeyboardEvent keyboardEvent) {
 
-        if (KeyboardEvent.KEY_DOWN == keyboardEvent.getKey()) {
-                movePlayer(0, 1);
-                return;
-        }
-
-        if (KeyboardEvent.KEY_UP == keyboardEvent.getKey()) {
-            movePlayer(0, -1);
-            return;
-        }
-
-        if (KeyboardEvent.KEY_LEFT == keyboardEvent.getKey()) {
-            movePlayer(-1, 0);
-            return;
-        }
-
-        if (KeyboardEvent.KEY_RIGHT == keyboardEvent.getKey()) {
-            movePlayer(1, 0);
-            return;
-        }
-    }
-
-    @Override
-    public void keyReleased(KeyboardEvent keyboardEvent) {
-
-    }
 
     // CLASS END
 
