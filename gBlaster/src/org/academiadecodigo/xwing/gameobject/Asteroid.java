@@ -2,7 +2,6 @@ package org.academiadecodigo.xwing.gameobject;
 
 
 import org.academiadecodigo.simplegraphics.pictures.Picture;
-import org.academiadecodigo.xwing.Game;
 import org.academiadecodigo.xwing.grid.Grid;
 import org.academiadecodigo.xwing.grid.GridPosition;
 import org.academiadecodigo.xwing.simplegfx.SimpleGfxGrid;
@@ -45,7 +44,7 @@ public class Asteroid extends GameObject {
 
     public void explosion() throws InterruptedException {
         for (int i = 10; i < 17 ; i++) {
-            this.explosion = new Picture(this.getCol()*SimpleGfxGrid.cellSize, this.getRow()*SimpleGfxGrid.cellSize, "images/explosion/"+i+".png");
+            this.explosion = new Picture(this.getCol()*SimpleGfxGrid.cellSize, this.getRow()*SimpleGfxGrid.cellSize, "gBlaster/resources/images/explosion/" +i+".png");
             explosion.draw();
             Thread.sleep(15);
             explosion.delete();

@@ -21,6 +21,7 @@ import org.academiadecodigo.xwing.grid.Grid;
 
             if (KeyboardEvent.KEY_DOWN == keyboardEvent.getKey()) {
                 game.getPlayer().movePlayer(0, 1);
+                System.out.println("down");
                 return;
             }
 
@@ -41,12 +42,14 @@ import org.academiadecodigo.xwing.grid.Grid;
 
             if (KeyboardEvent.KEY_SPACE == keyboardEvent.getKey()) {
 
-                game.setGameStarted();
                 try {
+                    game.deleteStartMenu();
                     game.start();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
+            }
 
                 /*
 
@@ -59,8 +62,8 @@ import org.academiadecodigo.xwing.grid.Grid;
                     System.out.println("depois da merda");
                     game.setGameStarted();
                 }
-                System.out.println("SPACE KEY PRESSED");*/
-            }
+                System.out.println("SPACE KEY PRESSED");
+            }*/
 
             if (KeyboardEvent.KEY_F == keyboardEvent.getKey()) {
                 game.getPlayer().shoot();
@@ -69,6 +72,7 @@ import org.academiadecodigo.xwing.grid.Grid;
 
             if (KeyboardEvent.KEY_R == keyboardEvent.getKey()) {
                 try {
+                    game.getPlayer().setDestroyed();
                     game.start();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -77,7 +81,7 @@ import org.academiadecodigo.xwing.grid.Grid;
             }
 
             if (KeyboardEvent.KEY_Q == keyboardEvent.getKey()) {
-                System.exit(0);
+                System.exit(1);
                 return;
             }
 

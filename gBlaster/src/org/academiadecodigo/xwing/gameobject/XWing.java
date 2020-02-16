@@ -6,14 +6,10 @@ import org.academiadecodigo.xwing.grid.Grid;
 import org.academiadecodigo.xwing.grid.GridPosition;
 import org.academiadecodigo.xwing.simplegfx.SimpleGfxGrid;
 import org.academiadecodigo.xwing.simplegfx.SimpleGfxGridPosition;
-import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
-import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
-import org.academiadecodigo.simplegraphics.graphics.Text;
 
-import java.awt.*;
 import java.io.File;
 
-public class XWing implements KeyboardHandler {
+public class XWing /*implements KeyboardHandler*/ {
 
     private GridPosition pos;
     private GridPosition extraPos;
@@ -32,7 +28,7 @@ public class XWing implements KeyboardHandler {
     private Picture shootDown;
     private Picture xWingLaserShot;
 
-    private boolean isDestroyed;
+    private boolean isDestroyed = false;
     private boolean shotFired;
 
     //CONSTRUCTOR
@@ -53,7 +49,7 @@ public class XWing implements KeyboardHandler {
         //shootDown = new Picture(this.getCol()*SimpleGfxGrid.cellSize, (this.getRow()+1)*SimpleGfxGrid.cellSize, "images/laserDown.png");
 
         for (int h = 0; h < 3; h++ ) {
-            health[h] = new Picture(( map.getCols() - h) * SimpleGfxGrid.cellSize - 150, (map.getRows()*SimpleGfxGrid.cellSize)+20, "images/r2d2-health.png");
+            health[h] = new Picture(( map.getCols() - h) * SimpleGfxGrid.cellSize - 150, (map.getRows()*SimpleGfxGrid.cellSize)+20, "gBlaster/resources/images/r2d2-health.png");
             health[h].draw();
         }
 
@@ -131,6 +127,10 @@ public class XWing implements KeyboardHandler {
         return isDestroyed;
     }
 
+    public void setDestroyed(){
+        isDestroyed = false;
+    }
+
     public void destroyed () {
         gfxPos.destroyed();
     }
@@ -174,7 +174,7 @@ public class XWing implements KeyboardHandler {
         return shotFired;
     }
 
-    @Override
+    /*@Override
     public void keyPressed(KeyboardEvent keyboardEvent) {
 
     }
@@ -182,7 +182,7 @@ public class XWing implements KeyboardHandler {
     @Override
     public void keyReleased(KeyboardEvent keyboardEvent) {
 
-    }
+    }*/
 
     // CLASS END
 
