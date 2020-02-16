@@ -26,11 +26,11 @@ public class SimpleGfxGridPosition implements KeyboardHandler {
         //xWing = new Rectangle(this.col, this.row, SimpleGfxGrid.cellSize, SimpleGfxGrid.cellSize);
         //xWing.draw();
 
-        picture = new Picture(this.col, this.row, "images/xwing.png");
+        picture = new Picture(this.col, this.row, "gBlaster/resources/images/xwing.png");
         picture.draw();
 
-        shootUp = new Picture(this.col, this.row, "images/laserUp.png");
-        shootDown = new Picture(this.col , this.row+1, "images/laserDown.png");
+        shootUp = new Picture(this.col, this.row, "gBlaster/esources/images/laserUp.png");
+        shootDown = new Picture(this.col , this.row+1, "gBlaster/resources/images/laserDown.png");
 
 
     }
@@ -43,7 +43,7 @@ public class SimpleGfxGridPosition implements KeyboardHandler {
             this.col = col*SimpleGfxGrid.cellSize+SimpleGfxGrid.PADDING;
             this.row = row*SimpleGfxGrid.cellSize+SimpleGfxGrid.PADDING;
 
-            picture = new Picture(this.col, this.row, "images/asteroid.png");
+            picture = new Picture(this.col, this.row, "gBlaster/resources/images/asteroid.png");
             picture.draw();
         }
 
@@ -54,7 +54,7 @@ public class SimpleGfxGridPosition implements KeyboardHandler {
             this.col = col*SimpleGfxGrid.cellSize+SimpleGfxGrid.PADDING;
             this.row = row*SimpleGfxGrid.cellSize+SimpleGfxGrid.PADDING;
 
-            picture = new Picture(this.col, this.row, "images/tieF.png");
+            picture = new Picture(this.col, this.row, "gBlaster/resources/images/tieF.png");
             picture.draw();
         }
 

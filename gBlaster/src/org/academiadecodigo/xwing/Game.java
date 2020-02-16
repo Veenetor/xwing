@@ -1,5 +1,6 @@
 package org.academiadecodigo.xwing;
 
+import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 import org.academiadecodigo.simplegraphics.graphics.Text;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
 import org.academiadecodigo.xwing.gameobject.*;
@@ -13,22 +14,28 @@ import org.academiadecodigo.simplegraphics.graphics.Color;
 
 
 import javax.sound.sampled.*;
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.InputStream;
 
 
-public class Game  implements KeyboardHandler {
+public class Game  /*implements KeyboardHandler*/ {
 
     private Grid map;
-    private XWing player;
     private int delay;
-    private Asteroid[] asteroidField;
     private int astCooldown;
-    private TieFighter[] tieFleet;
     private int level;
     private boolean gameOverB;
     private boolean gameStarted = false;
+    private Picture startMenu = new Picture(10,10, "gBlaster/resources/images/init.jpg");
+    private Grid grid;
+    private int rows;
+    private int cols;
+    private Rectangle rect;
+
+    // Game Object Properties
+
+    private XWing player;
+    private Asteroid[] asteroidField;
+    private TieFighter[] tieFleet;
 
     //Text Properties
 
@@ -37,7 +44,7 @@ public class Game  implements KeyboardHandler {
 
     // Score Properties
 
-    private int score = 00000;
+    private int score = 0;
     private int updatedScore;
     private int bestScore;
 
@@ -58,7 +65,48 @@ public class Game  implements KeyboardHandler {
     private File audioDuringGame;
     private File audioButton;
 
+    // GFX PROPERTIES;
 
+    private SimpleGfxGrid gfxMap;
+
+    // CONSTRUCTOR
+
+    public Game(int cols, int rows, int delay) {
+
+        this.cols = cols;
+        this.rows = rows;
+        this.delay = delay;
+        //asteroidField = new Asteroid[30];
+        //tieFleet = new TieFighter[3];
+
+        // KeyBoard Stuff
+
+        // player = new XWing(map);
+        handler = new KeyBoardHandling(this);
+        keyboard = new Keyboard(handler);
+        initListner();
+        startListner();
+
+/*        //  Print Score
+
+        text = new Text(1140, 715, "%05d" + score);
+        text.grow(13, 13);
+        text.setColor(Color.WHITE);
+        text.draw();*/
+
+        // Audio Resources
+/*
+        audioLaserShots = new File("Users/codecadet/Documents/AndreGoncalves/dev/game-blasters/xwing/gBlaster/src/resources/audio/shoot.wav");
+        audioLoser = new File("Users/codecadet/Documents/AndreGoncalves/dev/game-blasters/xwing/gBlaster/src/resources/audio/loser.wav");
+        audioButton = new File("Users/codecadet/Documents/AndreGoncalves/dev/game-blasters/xwing/gBlaster/src/resources/audio/button.wav");
+
+        // Falta:
+        audioGameOver = new File("/Users/codecadet/Documents/AndreGoncalves/dev/game-blasters/xwing/gBlaster/src/resources/audio/starwars.wav");
+        audioDuringGame = new File("Users/codecadet/Documents/AndreGoncalves/dev/game-blasters/xwing/gBlaster/src/resources/audio/");
+        audioStartMenu = new File("Users/codecadet/Documents/AndreGoncalves/dev/game-blasters/xwing/gBlaster/src/resources/audio/");
+  */  }
+
+    // Score Methods
 
     public int incScore(int points) {
         score += points;
@@ -69,120 +117,73 @@ public class Game  implements KeyboardHandler {
         return score;
     }
 
-    // GFX PROPERTIES;
+    public int setBestScore(){
 
-    private SimpleGfxGrid gfxMap;
+        if (updatedScore <= bestScore){
+            return bestScore = updatedScore;
+        }
 
-    // CONSTRUCTOR
-
-    public Game(int cols, int rows, int delay) {
-        this.delay = delay;
-        map = new Grid(cols, rows);
-        gfxMap = new SimpleGfxGrid(cols, rows);
-        asteroidField = new Asteroid[30];
-        tieFleet = new TieFighter[3];
-
-        //KeyBoard Stuff
-
-        player = new XWing(map);
-        handler = new KeyBoardHandling(this);
-        keyboard = new Keyboard(handler);
-        initListner();
-        startListner();
-
-        /*
-
-        // MOVEMENT
-        KeyboardEvent moveUp = new KeyboardEvent();
-        KeyboardEvent moveDown = new KeyboardEvent();
-        KeyboardEvent moveBack = new KeyboardEvent();
-        KeyboardEvent moveFor = new KeyboardEvent();
-        KeyboardEvent xWingShoot = new KeyboardEvent();
-        KeyboardEvent startGame = new KeyboardEvent();
-        KeyboardEvent endGame = new KeyboardEvent();
-
-        moveUp.setKey(KeyboardEvent.KEY_UP);
-        moveDown.setKey(KeyboardEvent.KEY_DOWN);
-        moveBack.setKey(KeyboardEvent.KEY_LEFT);
-        moveFor.setKey(KeyboardEvent.KEY_RIGHT);
-        xWingShoot.setKey(KeyboardEvent.KEY_F);
-        startGame.setKey(KeyboardEvent.KEY_SPACE);
-        endGame.setKey(KeyboardEvent.KEY_Q);
-        endGame.setKey(KeyboardEvent.KEY_R);
-
-        moveUp.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        moveDown.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        moveBack.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        moveFor.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        xWingShoot.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        startGame.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        startGame.setKeyboardEventType(KeyboardEventType.KEY_RELEASED);
-        endGame.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-
-        control.addEventListener(moveUp);
-        control.addEventListener(moveDown);
-        control.addEventListener(moveBack);
-        control.addEventListener(moveFor);
-        control.addEventListener(xWingShoot);
-        control.addEventListener(startGame);
-        control.addEventListener(endGame);
-
-        */
-
-        // SHOOT CONTROLS
-
-        //KeyboardEvent fireX = new KeyboardEvent();
-
-        //fireX.setKey(KeyboardEvent.KEY_F);
-
-        //fireX.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-
-        // addEventListener();
-
-        //  PRINT SCORE BASIS!!!!
-
-        text = new Text(1140, 715, "%05d" + "Score");
-        text.grow(13, 13);
-        text.setColor(Color.WHITE);
-        text.draw();
-        //text.setText(String.format("Score: "+updatedScore));
-
-        // Audio Resources
-
-        audioGameOver = new File("/Users/codecadet/Documents/AndreGoncalves/dev/game-blasters/xwing/gBlaster/src/resources/audio/starwars.wav");
-
-        //Falta:
-        audioDuringGame = new File("Users/codecadet/Documents/AndreGoncalves/dev/game-blasters/xwing/gBlaster/src/resources/audio/");
-        audioStartMenu = new File("Users/codecadet/Documents/AndreGoncalves/dev/game-blasters/xwing/gBlaster/src/resources/audio/");
-        audioLaserShots = new File("Users/codecadet/Documents/AndreGoncalves/dev/game-blasters/xwing/gBlaster/src/resources/audio/shoot.wav");
-        audioLoser = new File("Users/codecadet/Documents/AndreGoncalves/dev/game-blasters/xwing/gBlaster/src/resources/audio/loser.wav");
-        audioButton = new File("Users/codecadet/Documents/AndreGoncalves/dev/game-blasters/xwing/gBlaster/src/resources/audio/button.wav");
-
+        return score;
     }
 
-    public void reduceDelay() {
-        delay -= 50;
+    public int getBestScore(){
+        return bestScore;
     }
+
+    // ------------------------- INIT ----------------------------------
+
+    public void init() throws InterruptedException {
+
+        //startMenu = new Picture(10,10,"images/init.jpg");
+        startMenu.draw();
+        //Thread.sleep(1000);
+        //startMenu.delete();
+        //start();
+
+
+        /*Rectangle rect = new Rectangle(10,10,1260,760);
+        rect.setColor(Color.BLACK);
+        rect.fill();
+        rect.draw();
+        Thread.sleep(200);*/
+    }
+
+    // ----------------------------START---------------------------
+
 
     public void start() throws InterruptedException {
 
-       // if (gameStarted){
+        System.out.println("suppppp");
+        //gameStarted = true;
 
-        //}
+        map = new Grid(this.cols, this.rows);
+        gfxMap = new SimpleGfxGrid(this.cols, this.rows);
+        startMenu.delete();
+        gfxMap.getBackground();
+
+        player = new XWing(map);
+        asteroidField = new Asteroid[30];
+        tieFleet = new TieFighter[3];
 
 
+        text = new Text(1140, 715, "%05d" + score);
+        text.grow(13, 13);
+        text.setColor(Color.WHITE);
+        text.draw();
 
-        while (true) {
 
-            // Pause for a while
-            Thread.sleep(delay);
+        while(true) {
 
-            genAst();
-            //audioDuringGame;
             if (player.isDestroyed() == true) {
                 gameOver();
                 break;
             }
+            // Pause for a while
+            Thread.sleep(delay);
+
+            genAst();
+
+            //audioDuringGame;
 
             if (score > 1500) {
                 genTie();
@@ -195,19 +196,30 @@ public class Game  implements KeyboardHandler {
 
             text.setText(String.format("Score: " + updatedScore));
 
-            // if (score >= 200) { reduceDelay(); }
         }
-
     }
+
+    // -------------------------END START---------------------------
+
+    public Picture getStartMenu(){
+        startMenu.draw();
+        return startMenu;
+    }
+
+    public void deleteStartMenu(){
+        startMenu.delete();
+    }
+
 
 
     public void gameOver() throws InterruptedException {
         Thread.sleep(500);
-        Picture gameOver = new Picture(10, 10, "images/gameover.png");
+        Picture gameOver = new Picture(10, 10, "resources/images/gameover.png");
         gameOver.draw();
-        gfxMap.deleteBackground();
+        //gfxMap.deleteBackground();
         setBestScore();
 
+        System.out.println(bestScore);
 
         audio(audioGameOver);
 
@@ -217,16 +229,20 @@ public class Game  implements KeyboardHandler {
         endScore.setText(String.format("Your final Score was: " + updatedScore));
         endScore.draw();
 
+        // Meter a funcionar
+        /*
         endScore = new Text(1000, 700, "%05d" + "Score");
         endScore.grow(15, 15);
         endScore.setColor(Color.WHITE);
-        endScore.setText(String.format("Your best score is: " + bestScore));
+        endScore.setText(String.format("Your best score is: " + getBestScore()));
         endScore.draw();
         gameOverB = true;
-
-        //Thread.sleep(2000); // System.exit()
+        */
     }
 
+    public void reduceDelay() {
+        delay -= 50;
+    }
 
     private void genAst() {
 
@@ -460,13 +476,13 @@ public class Game  implements KeyboardHandler {
     }
 
 
-    @Override
+   /* @Override
     public void keyPressed(KeyboardEvent keyboardEvent) {
     }
 
     @Override
     public void keyReleased(KeyboardEvent keyboardEvent) {
-    }
+    }*/
 
     public boolean getGameStarted(){
         return gameStarted;
@@ -474,14 +490,6 @@ public class Game  implements KeyboardHandler {
 
     public void setGameStarted (){
         gameStarted = true;
-    }
-
-    public void setBestScore(){
-        if (bestScore > score){
-            bestScore = score;
-        } else if (score == 0){
-            bestScore = score;
-        }
     }
 
 }

@@ -1,10 +1,7 @@
 package org.academiadecodigo.xwing.simplegfx;
 
-import org.academiadecodigo.simplegraphics.graphics.Color;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
-import org.academiadecodigo.simplegraphics.graphics.Text;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
-import org.academiadecodigo.xwing.Game;
 
 public class SimpleGfxGrid {
 
@@ -14,7 +11,6 @@ public class SimpleGfxGrid {
     private int rows;
     private Rectangle canvas;
     private Picture background;
-    private Game game;
 
     // private Picture background;
 
@@ -22,8 +18,6 @@ public class SimpleGfxGrid {
         this.cols = cols;
         this.rows = rows;
 
-        background = new Picture(PADDING, PADDING, "images/background.jpg");
-        background.draw();
 
         //canvas = new Rectangle(PADDING, PADDING, cols*cellSize, rows*cellSize);
         //canvas.draw();
@@ -32,4 +26,10 @@ public class SimpleGfxGrid {
     public void deleteBackground(){
         background.delete();
     }
+
+    public void getBackground() {
+        background = new Picture(PADDING, PADDING, "gBlaster/resources/images/background.jpg");
+        background.draw();
+    }
+
 }
